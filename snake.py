@@ -12,7 +12,6 @@ GRID_HEIGHT = int(SCREEN_HEIGHT/GRID_SIZE)  #600/20
 WHITE = (255, 255, 255)
 ORANGE = (250, 150, 0)
 GRAY = (100, 100, 100)
-BLANK = (0, 0, 0)
 
 UP = (0, -1)
 DOWN = (0, 1)
@@ -56,9 +55,11 @@ class Snake():
         self.length += 1
 
     def draw(self, screen):
-        for p in self.positions:
-            rect = pygame.Rect((p[0], p[1], (GRID_SIZE, GRID_SIZE)))
-            pygame.draw.rect(screen, GRAY, rect)
+        red, green, blue = 50 / (self.length - 1), 150, 150 / (self.length - 1)
+        for i, p in enumerate(self.positions):
+            color = (100 + red *i, green, blue * i)
+            rect = pygame.Rect(p[0], p[1], GRID_SIZE, GRID_SIZE)
+            pygame.draw.rect(screen, color, rect)
 
 class Feed():
     def __init__(self):
@@ -99,12 +100,12 @@ class Game():
         self.check_eat(self.snake, self.feed)
         self.speed = (10+self.snake.length)/2
 
-    def check_eat(snake, feed):
+    def check_eat(self, snake, feed):
         if snake.positions[0] == feed.position:
             snake.eat()
             feed.create()
 
-    def draw_info(self, length, speed, sccreen):
+    def draw_info(self, length, speed, screen):
         info = "Lenght: " + str(length)+ "  " + "Speed: " + str(round(speed, 2))
         font = pygame.font.SysFont('FixedSys', 30, False, False)
         text_obj = font.render(info, 1, GRAY)
@@ -134,7 +135,7 @@ def main():
         game.run_logic()
         game.display_frame(screen)
         pygame.display.flip() 
-        clock.tick(60)    
+        clock.tick(game.speed)    
     pygame.quit()      
 
 if __name__ == '__main__':
