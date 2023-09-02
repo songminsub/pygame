@@ -121,6 +121,15 @@ class Lane():
             pygame.draw.rect(screen, self.color, \
                              [self.x, next_lane, self.width, self.height])
             next_lane += self.height + self.gap
+class Car():
+    def __init__(self, x, y, dx, dy):
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+
+        car_image_path = resource_path('assets/car')
+
 
 
 class Game():
